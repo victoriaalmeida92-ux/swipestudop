@@ -1,0 +1,11 @@
+# Segredos e credenciais locais (NUNCA subir)
+.env
+
+# Dados locais, mídias em cache e biblioteca gerada em runtime
+data/
+library/
+
+# Dependências e arquivos de sistema
+node_modules/
+.DS_Store
+Thumbs.db

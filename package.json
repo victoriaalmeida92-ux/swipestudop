@@ -1,0 +1,14 @@
+{
+  "name": "content-swipe-assistant",
+  "version": "1.0.0",
+  "description": "Auxiliar de produção de conteúdo e Swipe File automático de Instagram (Reels e Stories)",
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "sync": "node scripts/sync-apify.mjs",
+    "rebuild-library": "node scripts/rebuild-library.mjs"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

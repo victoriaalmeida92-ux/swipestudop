@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Swipe Studio — Auxiliar de Conteúdo & Swipe File</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand-lockup">
+        <div class="brand-icon">S</div>
+        <div>
+          <div class="brand-title">Swipe Studio</div>
+          <div class="brand-subtitle">Reels &amp; Stories Lab</div>
+        </div>
+      </div>
+
+      <nav class="nav-menu" id="navMenu">
+        <button class="nav-item active" data-tab="library">
+          <span class="nav-icon">📚</span>
+          <span>Swipe File</span>
+          <span class="nav-badge" id="badgeTotalItems">0</span>
+        </button>
+        <button class="nav-item" data-tab="hooks">
+          <span class="nav-icon">🪝</span>
+          <span>Banco de Ganchos</span>
+        </button>
+        <button class="nav-item" data-tab="profiles">
+          <span class="nav-icon">📡</span>
+          <span>Perfis Monitorados</span>
+          <span class="nav-badge" id="badgeProfiles">0</span>
+        </button>
+        <button class="nav-item" data-tab="radar">
+          <span class="nav-icon">🧭</span>
+          <span>Radar &amp; Treino</span>
+          <span class="nav-badge" id="badgeCandidates">0</span>
+        </button>
+        <button class="nav-item" data-tab="studio">
+          <span class="nav-icon">🎬</span>
+          <span>Studio de Vídeo</span>
+          <span class="nav-badge" id="badgeStudioJobs">0</span>
+        </button>
+        <button class="nav-item" data-tab="dna">
+          <span class="nav-icon">🧬</span>
+          <span>DNA da Marca</span>
+        </button>
+        <button class="nav-item" data-tab="settings">
+          <span class="nav-icon">⚙️</span>
+          <span>Config &amp; Automação</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sync-status-card">
+          <div class="sync-status-label">Biblioteca IA (Markdown)</div>
+          <div class="sync-status-path">./library/ sincronizada</div>
+          <div class="sync-status-hint" id="apifyStatusBadge">Verificando Apify...</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main area -->
+    <main class="main-area">
+      <header class="topbar">
+        <div>
+          <h1 class="page-title" id="pageTitle">Swipe File</h1>
+          <p class="page-subtitle" id="pageSubtitle">Referências desconstruídas prontas para modelar no seu perfil</p>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-secondary" id="btnSyncNow" title="Buscar novos posts dos perfis ativos via Apify">
+            <span class="btn-icon">↻</span>
+            <span>Sincronizar Apify</span>
+          </button>
+          <button class="btn btn-primary" id="btnOpenNewModal">
+            <span class="btn-icon">+</span>
+            <span>Nova Referência</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="content-viewport">
+        <!-- TAB 1: SWIPE FILE -->
+        <section class="tab-panel active" id="tab-library">
+          <div class="kpi-grid" id="kpiGrid"></div>
+
+          <div class="review-tabs-bar" id="reviewTabsBar"></div>
+
+          <div class="filters-bar">
+            <input
+              type="search"
+              id="filterSearch"
+              class="input search-input"
+              placeholder="Buscar por gancho, legenda, tag, @perfil ou ID (ex: SWP-001)..."
+            />
+            <select id="filterFormat" class="select">
+              <option value="ALL">Todos Formatos</option>
+              <option value="Reel">Reels</option>
+              <option value="Story">Stories</option>
+            </select>
+            <select id="filterNiche" class="select">
+              <option value="ALL">Todos Assuntos/Nichos</option>
+            </select>
+            <select id="filterProfile" class="select">
+              <option value="ALL">Todos Perfis</option>
+            </select>
+            <select id="filterFunnel" class="select">
+              <option value="ALL">Todo Funil</option>
+              <option value="Topo">Topo (Atração)</option>
+              <option value="Meio">Meio (Autoridade)</option>
+              <option value="Fundo">Fundo (Venda)</option>
+            </select>
+            <select id="filterHookType" class="select">
+              <option value="ALL">Todos Ganchos</option>
+            </select>
+            <select id="filterStatus" class="select">
+              <option value="ALL">Todos Status</option>
+              <option value="Novo">Novo</option>
+              <option value="Para Modelar">Para Modelar</option>
+              <option value="Modelado">Modelado</option>
+              <option value="Arquivado">Arquivado</option>
+            </select>
+            <select id="filterSort" class="select">
+              <option value="newest">Mais Recentes</option>
+              <option value="relevance">Maior Relevância (Algoritmo)</option>
+              <option value="views">Mais Views</option>
+              <option value="likes">Mais Likes</option>
+              <option value="favorites">Favoritos Primeiro</option>
+            </select>
+          </div>
+
+          <div class="cards-grid" id="itemsGrid"></div>
+        </section>
+
+        <!-- TAB 2: BANCO DE GANCHOS -->
+        <section class="tab-panel" id="tab-hooks">
+          <div class="section-header-inline">
+            <div>
+              <h2>Banco de Ganchos (Hooks)</h2>
+              <p class="muted">Padrões de abertura extraídos dos seus Reels e Stories para destravar novos roteiros em segundos.</p>
+            </div>
+            <div class="field-row" style="flex:0 0 auto;">
+              <select id="hooksFilterNiche" class="select">
+                <option value="ALL">Todos Assuntos/Nichos</option>
+              </select>
+              <select id="hooksFilterType" class="select">
+                <option value="ALL">Todos os Tipos de Gancho</option>
+              </select>
+            </div>
+          </div>
+          <div id="hooksContainer" class="hooks-groups"></div>
+        </section>
+
+        <!-- TAB 3: PERFIS MONITORADOS -->
+        <section class="tab-panel" id="tab-profiles">
+          <div class="split-layout">
+            <div class="panel-card">
+              <h3>Adicionar Perfil de Referência</h3>
+              <p class="muted small">Cadastre perfis que vendem ou produzem conteúdo parecido com o seu produto para monitorar automaticamente.</p>
+              <form id="formAddProfile" class="stack-form">
+                <div class="field-row">
+                  <label class="field">
+                    <span>@handle ou link do Instagram *</span>
+                    <input type="text" name="handle" class="input" placeholder="ex: @perfilreferencia ou instagram.com/perfil" required />
+                  </label>
+                  <label class="field">
+                    <span>Assunto / Nicho *</span>
+                    <input type="text" name="niche" class="input" list="nicheSuggestions" placeholder="Ex: Skincare, Fitness, Copy, Vendas..." required />
+                  </label>
+                </div>
+                <div class="field-row">
+                  <label class="field">
+                    <span>Apelido / Nome</span>
+                    <input type="text" name="displayName" class="input" placeholder="Ex: Fulano — Concorrente Direto" />
+                  </label>
+                  <label class="field">
+                    <span>Papel / Categoria</span>
+                    <select name="category" class="select">
+                      <option value="Concorrente Direto">Concorrente Direto</option>
+                      <option value="Referência do Nicho">Referência do Nicho</option>
+                      <option value="Referência Internacional">Referência Internacional</option>
+                      <option value="Estilo / Formato">Estilo / Formato</option>
+                    </select>
+                  </label>
+                </div>
+                <label class="field">
+                  <span>Por que você acompanha esse perfil?</span>
+                  <textarea name="whyFollow" class="textarea" rows="2" placeholder="Ex: Ótimos ganchos de Reels nos 3 primeiros segundos e boas sequências de venda nos Stories"></textarea>
+                </label>
+                <div class="field-row align-center">
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="monitorReels" checked />
+                    <span>Monitorar Reels</span>
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="monitorStories" />
+                    <span>Monitorar Stories (se actor configurado)</span>
+                  </label>
+                  <label class="field compact">
+                    <span>Limite / sync</span>
+                    <input type="number" name="maxItemsPerSync" class="input" value="10" min="1" max="50" />
+                  </label>
+                </div>
+                <button type="submit" class="btn btn-primary">Adicionar Perfil</button>
+              </form>
+            </div>
+
+            <div class="panel-card">
+              <div class="panel-card-header">
+                <h3>Histórico de Coletas (Apify)</h3>
+                <button class="btn btn-sm btn-secondary" id="btnSyncProfilesTab">↻ Rodar Coleta Agora</button>
+              </div>
+              <div id="syncLogsList" class="logs-list"></div>
+            </div>
+          </div>
+
+          <div class="panel-card mt-20">
+            <div class="panel-card-header" style="flex-wrap:wrap;">
+              <div>
+                <h3>Perfis Cadastrados por Assunto / Nicho</h3>
+                <p class="muted small" style="margin:2px 0 0;">Separe seus perfis por assunto para organizar a biblioteca e coletar por nicho.</p>
+              </div>
+              <div id="profilesNicheTabs" class="niche-pills-bar"></div>
+            </div>
+            <div id="profilesList" class="niche-groups-container"></div>
+          </div>
+        </section>
+
+        <!-- TAB 3B: RADAR DE PERFIS & TREINAMENTO DO ALGORITMO -->
+        <section class="tab-panel" id="tab-radar">
+          <div class="split-layout">
+            <!-- Descoberta de Novos Perfis -->
+            <div class="panel-card">
+              <h3>🧭 Radar de Novos Perfis (Instagram)</h3>
+              <p class="muted small">Roda uma busca no Instagram usando o seu nicho + os termos que você aprovou no treino e sugere de 3 a 5 perfis novos para você aprovar no escopo do Swipe File.</p>
+              <form id="formDiscoverProfiles" class="stack-form">
+                <div class="field-row">
+                  <label class="field">
+                    <span>Assunto / Nicho *</span>
+                    <input type="text" name="niche" id="discoverNicheInput" class="input" list="nicheSuggestions" placeholder="Ex: Lipedema" required />
+                  </label>
+                  <label class="field compact">
+                    <span>Sugerir</span>
+                    <select name="limit" class="select">
+                      <option value="3">3 perfis</option>
+                      <option value="4">4 perfis</option>
+                      <option value="5" selected>5 perfis</option>
+                    </select>
+                  </label>
+                </div>
+                <label class="field">
+                  <span>Termo extra de busca (opcional)</span>
+                  <input type="text" name="customQuery" class="input" placeholder="Ex: lipedema awareness, lymphatic drainage, compression..." />
+                </label>
+                <button type="submit" class="btn btn-primary" id="btnRunDiscovery">🔎 Descobrir Novos Perfis (Apify)</button>
+              </form>
+            </div>
+
+            <!-- Treinamento do Algoritmo -->
+            <div class="panel-card">
+              <div class="panel-card-header" style="margin-bottom:10px;">
+                <div>
+                  <h3>🧠 Algoritmo de Curadoria por Nicho</h3>
+                  <p class="muted small" style="margin:2px 0 0;">Aprende automaticamente com cada 👍 Aprovar e 👎 Reprovar.</p>
+                </div>
+                <select id="curationNicheSelect" class="select"></select>
+              </div>
+
+              <div id="curationStatsSummary" class="curation-stats-strip"></div>
+
+              <form id="formCurationConfig" class="stack-form">
+                <div class="field-row align-center">
+                  <label class="checkbox-label" style="flex:1;">
+                    <input type="checkbox" name="autoRejectEnabled" id="curationAutoReject" checked />
+                    <span>Filtrar automaticamente irrelevantes na coleta</span>
+                  </label>
+                  <label class="field compact">
+                    <span>Nota mín. (%)</span>
+                    <input type="number" name="autoFilterThreshold" id="curationThreshold" class="input" min="0" max="90" value="35" />
+                  </label>
+                </div>
+
+                <label class="field">
+                  <span>Palavras-chave positivas (dão boost na relevância — separadas por vírgula)</span>
+                  <input type="text" name="manualPositiveKeywords" id="curationPosKw" class="input" placeholder="Ex: lipedema, compression, lymphatic, swelling, surgery, pain" />
+                </label>
+
+                <label class="field">
+                  <span>Palavras-chave bloqueadas (reprovam conteúdo fora do tema)</span>
+                  <input type="text" name="manualNegativeKeywords" id="curationNegKw" class="input" placeholder="Ex: halloween, bourbon, carline, fall fashion, dance" />
+                </label>
+
+                <div class="field-row">
+                  <button type="submit" class="btn btn-primary" style="flex:1;">Salvar Regras &amp; Reavaliar</button>
+                  <button type="button" class="btn btn-secondary" id="btnApplyAutoFilterNow" title="Move pendentes abaixo da nota mínima para Reprovados">🧹 Filtrar Pendentes</button>
+                </div>
+              </form>
+
+              <div class="learned-terms-box" id="learnedTermsBox"></div>
+            </div>
+          </div>
+
+          <div class="panel-card mt-20">
+            <div class="panel-card-header">
+              <div>
+                <h3>Perfis Sugeridos para Aprovação</h3>
+                <p class="muted small" style="margin:2px 0 0;">Aprove os perfis bons para entrarem automaticamente no monitoramento do Swipe File, ou dispense os irrelevantes.</p>
+              </div>
+              <span class="muted small" id="discoveryMetaInfo"></span>
+            </div>
+            <div id="candidatesList" class="candidates-grid"></div>
+          </div>
+        </section>
+
+        <!-- TAB 3C: STUDIO DE VÍDEO (SEEDANCE + OMNIHUMAN + LEGENDAS / GOOGLE VIDS) -->
+        <section class="tab-panel" id="tab-studio">
+          <div class="studio-subnav" id="studioSubnav">
+            <button type="button" class="review-tab-pill active" data-studio-subtab="generate">✨ Modelar &amp; Gerar Vídeo (Gemini Omni / Seedance)</button>
+            <button type="button" class="review-tab-pill" data-studio-subtab="subtitles">💬 Legendas (FFmpeg) &amp; Google Vids</button>
+          </div>
+
+          <!-- SUBTAB 1: GERAR / MODELAR VÍDEO VIA API -->
+          <div id="studioSub-generate">
+            <div class="studio-models-grid" id="studioModelsGrid"></div>
+
+            <div class="split-layout mt-20">
+              <div class="panel-card">
+                <div class="panel-card-header" style="margin-bottom:10px;">
+                  <div>
+                    <h3>Configurar Modelagem de Vídeo</h3>
+                    <p class="muted small" style="margin:2px 0 0;" id="studioActiveModelDesc">Selecione o modelo acima para configurar os inputs.</p>
+                  </div>
+                  <span class="pill pill-niche" id="studioFalStatusBadge">Verificando fal.ai...</span>
+                </div>
+
+                <form id="formStudioGenerate" class="stack-form">
+                  <input type="hidden" name="modelKey" id="studioModelKeyInput" value="seedance-ref" />
+                  <input type="hidden" name="imageAssetId" id="studioImageAssetId" />
+                  <input type="hidden" name="audioAssetId" id="studioAudioAssetId" />
+                  <input type="hidden" name="videoAssetId" id="studioVideoAssetId" />
+
+                  <div class="field-row">
+                    <label class="field">
+                      <span>Título do Projeto</span>
+                      <input type="text" name="title" id="studioTitleInput" class="input" placeholder="Ex: Reel Lipedema — Gancho 01" />
+                    </label>
+                    <label class="field" id="studioSwipeRefField">
+                      <span>Puxar Vídeo de Referência do Swipe File (@Video1)</span>
+                      <select name="swipeItemId" id="studioSwipeItemSelect" class="select">
+                        <option value="">(Nenhum — opcional)</option>
+                      </select>
+                    </label>
+                  </div>
+
+                  <!-- Upload / URL de Imagem (@Image1 / Avatar) -->
+                  <div class="asset-upload-box" id="studioImageBox">
+                    <div class="asset-upload-head">
+                      <span>🖼️ Foto do Avatar / Produto (<code id="studioImageTag">@Image1</code>)</span>
+                      <label class="btn btn-sm btn-secondary upload-btn-label">
+                        <span>Upload Foto</span>
+                        <input type="file" id="studioImageFile" accept="image/*" hidden />
+                      </label>
+                    </div>
+                    <input type="url" name="imageUrl" id="studioImageUrl" class="input" placeholder="Ou cole URL pública da imagem (JPG/PNG/WEBP)..." />
+                    <div class="small muted" id="studioImageStatus">Nenhuma foto enviada ainda.</div>
+                  </div>
+
+                  <!-- Upload / URL de Áudio (@Audio1 / Locução) -->
+                  <div class="asset-upload-box" id="studioAudioBox">
+                    <div class="asset-upload-head">
+                      <span>🎙️ Áudio / Locução MP3 ou WAV (<code id="studioAudioTag">@Audio1</code>)</span>
+                      <label class="btn btn-sm btn-secondary upload-btn-label">
+                        <span>Upload Áudio</span>
+                        <input type="file" id="studioAudioFile" accept="audio/*" hidden />
+                      </label>
+                    </div>
+                    <input type="url" name="audioUrl" id="studioAudioUrl" class="input" placeholder="Ou cole URL pública do áudio (MP3/WAV/M4A)..." />
+                    <div class="small muted" id="studioAudioStatus">Nenhum áudio enviado ainda.</div>
+                  </div>
+
+                  <!-- Upload opcional de Vídeo customizado (@Video1) -->
+                  <div class="asset-upload-box" id="studioVideoCustomBox">
+                    <div class="asset-upload-head">
+                      <span>🎥 Vídeo Extra de Referência (<code>@Video1</code> — se não usar um Reel do Swipe File)</span>
+                      <label class="btn btn-sm btn-secondary upload-btn-label">
+                        <span>Upload MP4</span>
+                        <input type="file" id="studioVideoFile" accept="video/mp4,video/quicktime" hidden />
+                      </label>
+                    </div>
+                    <div class="small muted" id="studioVideoStatus">Se selecionou um Reel do Swipe File acima, ele já entra automaticamente como @Video1.</div>
+                  </div>
+
+                  <!-- Prompt -->
+                  <div id="studioPromptBox" class="field">
+                    <div class="asset-upload-head">
+                      <span>Prompt de Direção / Modelagem</span>
+                      <div style="display:flex; gap:6px;" id="studioTagInsertRow">
+                        <button type="button" class="btn btn-sm btn-ghost" data-insert-tag="@Video1">+ @Video1</button>
+                        <button type="button" class="btn btn-sm btn-ghost" data-insert-tag="@Image1">+ @Image1</button>
+                        <button type="button" class="btn btn-sm btn-ghost" data-insert-tag="@Audio1">+ @Audio1</button>
+                      </div>
+                    </div>
+                    <textarea name="prompt" id="studioPromptInput" class="textarea" rows="4" placeholder="Ex: Recreate the camera movement and pacing of @Video1, featuring the person from @Image1 speaking naturally in a bright bedroom, smartphone vertical UGC style, realistic skin texture."></textarea>
+                  </div>
+
+                  <div class="field-row align-center">
+                    <label class="field compact">
+                      <span>Resolução</span>
+                      <select name="resolution" class="select">
+                        <option value="720p" selected>720p</option>
+                        <option value="1080p">1080p</option>
+                      </select>
+                    </label>
+                    <label class="field compact" id="studioAspectField">
+                      <span>Proporção</span>
+                      <select name="aspectRatio" class="select">
+                        <option value="9:16" selected>9:16 (Reels)</option>
+                        <option value="auto">Auto</option>
+                        <option value="16:9">16:9</option>
+                        <option value="1:1">1:1</option>
+                      </select>
+                    </label>
+                    <label class="field compact" id="studioDurationField">
+                      <span>Duração</span>
+                      <select name="duration" class="select">
+                        <option value="5">5s</option>
+                        <option value="10" selected>10s</option>
+                        <option value="15">15s</option>
+                      </select>
+                    </label>
+                    <label class="checkbox-label" id="studioGenAudioField">
+                      <input type="checkbox" name="generateAudio" checked />
+                      <span>Áudio nativo</span>
+                    </label>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary" id="btnSubmitVideoJob">🚀 Gerar Vídeo via API</button>
+
+                  <div class="guide-box" style="margin-top:4px;">
+                    <div class="guide-title">🌊 Quer gastar seus 1.000 créditos mensais do Google Flow Web?</div>
+                    <p class="muted small" style="margin:0 0 8px;">Os 1.000 créditos do plano Google AI Pro valem direto no site do Flow (enquanto a API usa o bônus separado de US$ 10/mês no AI Studio). Use os atalhos abaixo para levar este prompt + referência em 1 clique:</p>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                      <button type="button" class="btn btn-sm btn-secondary" id="btnCopyStudioPromptFlow">📋 Copiar Prompt</button>
+                      <button type="button" class="btn btn-sm btn-secondary" data-open-folder="media">📂 Pasta dos Reels</button>
+                      <a href="https://labs.google/fx/tools/flow" target="_blank" rel="noreferrer" class="btn btn-sm btn-secondary">🌊 Abrir Google Flow ↗</a>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Galeria de Jobs Gerados -->
+              <div class="panel-card">
+                <div class="panel-card-header">
+                  <div>
+                    <h3>Vídeos Gerados no Studio</h3>
+                    <p class="muted small" style="margin:2px 0 0;">Atualização automática enquanto estiver na fila.</p>
+                  </div>
+                  <button type="button" class="btn btn-sm btn-secondary" id="btnOpenOutputsFolder">📂 Abrir Pasta</button>
+                </div>
+                <div id="studioJobsList" class="studio-jobs-list"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUBTAB 2: EDITOR DE LEGENDAS (FFMPEG) + GOOGLE VIDS -->
+          <div id="studioSub-subtitles" class="hidden">
+            <div class="split-layout">
+              <!-- Editor de Legendas FFmpeg Local -->
+              <div class="panel-card">
+                <div class="panel-card-header" style="margin-bottom:10px;">
+                  <div>
+                    <h3>💬 Editor de Legendas Embutido (FFmpeg Local)</h3>
+                    <p class="muted small" style="margin:2px 0 0;">Queima legendas estilo Reels/TikTok direto no MP4 em segundos na sua máquina.</p>
+                  </div>
+                  <span class="pill pill-fundo" id="ffmpegStatusBadge">FFmpeg OK</span>
+                </div>
+
+                <form id="formRenderSubtitles" class="stack-form">
+                  <div class="field-row">
+                    <label class="field">
+                      <span>Vídeo de Origem *</span>
+                      <select id="subVideoSourceSelect" class="select" required>
+                        <option value="">Selecione um vídeo do Studio ou Swipe File...</option>
+                      </select>
+                    </label>
+                    <label class="field">
+                      <span>Ou Upload MP4 Local</span>
+                      <label class="btn btn-secondary upload-btn-label" style="width:100%;">
+                        <span>📁 Enviar MP4</span>
+                        <input type="file" id="subLocalVideoFile" accept="video/mp4,video/quicktime" hidden />
+                      </label>
+                    </label>
+                  </div>
+                  <input type="hidden" id="subLocalAssetId" />
+
+                  <label class="field">
+                    <span>1. Cole o texto falado (para gerar timestamps automáticos)</span>
+                    <textarea id="subRawScript" class="textarea" rows="3" placeholder="Cole aqui a fala do vídeo e clique em 'Gerar Timestamps (.SRT)'..."></textarea>
+                  </label>
+
+                  <div class="field-row align-center">
+                    <label class="field compact">
+                      <span>Palavras/bloco</span>
+                      <input type="number" id="subWordsPerCue" class="input" value="4" min="2" max="8" />
+                    </label>
+                    <button type="button" class="btn btn-secondary" id="btnAutoGenerateSrt" style="margin-top:18px;">⏱️ Gerar Timestamps (.SRT) Automáticos</button>
+                    <button type="button" class="btn btn-ghost" id="btnDownloadSrtOnly" style="margin-top:18px;">📄 Baixar .SRT</button>
+                  </div>
+
+                  <label class="field">
+                    <span>2. Legendas em formato .SRT (edite texto ou tempos se quiser)</span>
+                    <textarea id="subSrtEditor" class="textarea" rows="7" style="font-family:monospace; font-size:12px;" placeholder="1&#10;00:00:00,300 --> 00:00:02,200&#10;Stop doing this if you have lipedema!&#10;&#10;2&#10;00:00:02,300 --> 00:00:04,500&#10;Here is what actually works..."></textarea>
+                  </label>
+
+                  <div class="field-row">
+                    <label class="field">
+                      <span>Estilo Visual</span>
+                      <select id="subStylePreset" class="select">
+                        <option value="viral-yellow">Amarelo Viral (Reels/TikTok)</option>
+                        <option value="clean-white">Branco Clean c/ Contorno</option>
+                        <option value="dark-box">Caixa Escura Moderna</option>
+                      </select>
+                    </label>
+                    <label class="field compact">
+                      <span>Tamanho</span>
+                      <input type="number" id="subFontSize" class="input" value="68" min="36" max="104" />
+                    </label>
+                    <label class="field">
+                      <span>Posição</span>
+                      <select id="subPosition" class="select">
+                        <option value="bottom" selected>Inferior (padrão Reels)</option>
+                        <option value="center">Centro</option>
+                        <option value="top">Superior</option>
+                      </select>
+                    </label>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary" id="btnBurnSubtitles">🔥 Renderizar Vídeo Legendado (MP4)</button>
+                </form>
+              </div>
+
+              <!-- Integração & Handoff para Google Vids -->
+              <div class="panel-card">
+                <h3>🎞️ Edição Avançada &amp; Legendas no Google Vids</h3>
+                <p class="muted small">O <strong>Google Vids</strong> ainda não disponibiliza API REST pública (a edição e as legendas animadas nativas funcionam pela interface web do Google Workspace). Por isso deixamos o envio preparado em 3 cliques:</p>
+
+                <div class="vids-steps-card">
+                  <div class="vids-step">
+                    <span class="vids-step-num">1</span>
+                    <div>
+                      <strong>Abra a pasta local do vídeo gerado</strong>
+                      <p class="muted small" style="margin:2px 0 8px;">Os MP4s gerados pelo Seedance/OmniHuman ou já legendados ficam salvos prontos para arrastar.</p>
+                      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <button type="button" class="btn btn-sm btn-secondary" data-open-folder="outputs">📂 Pasta Studio (MP4)</button>
+                        <button type="button" class="btn btn-sm btn-secondary" data-open-folder="renders">📂 Pasta Legendados</button>
+                        <button type="button" class="btn btn-sm btn-secondary" data-open-folder="media">📂 Pasta Swipe File</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="vids-step">
+                    <span class="vids-step-num">2</span>
+                    <div>
+                      <strong>Abra um projeto novo no Google Vids</strong>
+                      <p class="muted small" style="margin:2px 0 8px;">Clique abaixo para abrir o Google Vids direto em um vídeo novo (formato vertical ou horizontal).</p>
+                      <a href="https://vids.new" target="_blank" rel="noreferrer" class="btn btn-sm btn-primary">🎬 Abrir Google Vids (vids.new) ↗</a>
+                    </div>
+                  </div>
+
+                  <div class="vids-step">
+                    <span class="vids-step-num">3</span>
+                    <div>
+                      <strong>Arraste o MP4 e ative Legendas Animadas</strong>
+                      <p class="muted small" style="margin:2px 0 0;">No Google Vids: <em>Inserir → Fazer upload do computador</em> (arraste o MP4 da pasta aberta) → clique no ícone de <strong>Legendas (CC / Captions)</strong> na barra lateral direita para gerar legendas sincronizadas e estilizadas automaticamente pelo Google!</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-20">
+                  <h4 style="margin-bottom:10px;">Vídeos Legendados Prontos (FFmpeg)</h4>
+                  <div id="studioRendersList" class="studio-jobs-list"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 4: DNA DA MARCA -->
+        <section class="tab-panel" id="tab-dna">
+          <div class="panel-card">
+            <div class="panel-card-header">
+              <div>
+                <h2>DNA da Marca &amp; Produto</h2>
+                <p class="muted">Salvo automaticamente em <code>library/brand-dna.md</code>. Toda modelagem que fizermos usa esse DNA para criar conteúdo 100% original e com a sua voz.</p>
+              </div>
+              <button class="btn btn-primary" id="btnSaveDnaTop">Salvar DNA</button>
+            </div>
+
+            <form id="formBrandDna" class="dna-form">
+              <div class="field-row">
+                <label class="field">
+                  <span>Nome da Marca / Projeto</span>
+                  <input type="text" name="brandName" class="input" placeholder="Ex: Minha Marca" />
+                </label>
+                <label class="field">
+                  <span>Seu @ no Instagram</span>
+                  <input type="text" name="instagramHandle" class="input" placeholder="Ex: @seuperfil" />
+                </label>
+                <label class="field">
+                  <span>Nicho</span>
+                  <input type="text" name="niche" class="input" placeholder="Ex: Skincare, Fitness, Infoproduto, Moda..." />
+                </label>
+              </div>
+
+              <div class="field-row">
+                <label class="field">
+                  <span>Produto Principal</span>
+                  <input type="text" name="productName" class="input" placeholder="O que exatamente você vende?" />
+                </label>
+                <label class="field">
+                  <span>Oferta / Preço / Promessa Central</span>
+                  <input type="text" name="productOffer" class="input" placeholder="Ex: Ticket R$197, garantia X, entrega resultado Y" />
+                </label>
+              </div>
+
+              <label class="field">
+                <span>Público-Alvo (ICP)</span>
+                <textarea name="targetAudience" class="textarea" rows="2" placeholder="Quem é o comprador ideal? Idade, momento de vida, rotina, nível de consciência..."></textarea>
+              </label>
+
+              <div class="field-row">
+                <label class="field">
+                  <span>Principais Dores do Público</span>
+                  <textarea name="mainPains" class="textarea" rows="3" placeholder="Quais frustrações ou problemas tiram o sono do seu cliente?"></textarea>
+                </label>
+                <label class="field">
+                  <span>Principais Desejos</span>
+                  <textarea name="mainDesires" class="textarea" rows="3" placeholder="Qual transformação ou resultado ele mais quer alcançar?"></textarea>
+                </label>
+              </div>
+
+              <div class="field-row">
+                <label class="field">
+                  <span>Objeções Comuns antes de Comprar</span>
+                  <textarea name="commonObjections" class="textarea" rows="3" placeholder="Ex: 'É caro', 'Não tenho tempo', 'Já tentei antes e não funcionou'..."></textarea>
+                </label>
+                <label class="field">
+                  <span>Diferenciais &amp; Mecanismo Único</span>
+                  <textarea name="uniqueMechanism" class="textarea" rows="3" placeholder="Por que comprar de você e não do concorrente?"></textarea>
+                </label>
+              </div>
+
+              <div class="field-row">
+                <label class="field">
+                  <span>Tom de Voz &amp; Personalidade</span>
+                  <textarea name="toneOfVoice" class="textarea" rows="2" placeholder="Ex: Direto, prático, bem-humorado, sem termos técnicos difíceis"></textarea>
+                </label>
+                <label class="field">
+                  <span>Provas, Resultados &amp; Bastidores Disponíveis</span>
+                  <textarea name="proofsAndResults" class="textarea" rows="2" placeholder="Ex: Depoimentos reais, antes/depois, bastidores de produção, testes ao vivo"></textarea>
+                </label>
+              </div>
+
+              <div class="field-row">
+                <label class="field">
+                  <span>Palavras &amp; Clichês Proibidos</span>
+                  <input type="text" name="forbiddenCliches" class="input" placeholder="Ex: arrasta pra cima, oportunidade única, segredo infalível" />
+                </label>
+                <label class="field">
+                  <span>Notas Extras para a IA</span>
+                  <input type="text" name="extraNotes" class="input" placeholder="Ex: Sempre usar CTAs com palavra-chave no Direct" />
+                </label>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Salvar DNA da Marca</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- TAB 5: CONFIGURAÇÕES & AUTOMAÇÃO -->
+        <section class="tab-panel" id="tab-settings">
+          <div class="split-layout">
+            <div class="panel-card">
+              <h3>Chaves de API &amp; Coletor (Apify + Gemini)</h3>
+              <p class="muted small">Salvas localmente no arquivo <code>.env</code> (nunca enviadas para fora da sua máquina, exceto para chamar as próprias APIs da Apify/Gemini).</p>
+              <form id="formSettings" class="stack-form">
+                <label class="field">
+                  <span>APIFY_TOKEN <span class="badge-inline" id="settingsApifyState"></span></span>
+                  <input type="password" name="apifyToken" class="input" placeholder="Cole novo token (deixe vazio para manter atual)" autocomplete="off" />
+                  <small class="muted">Crie grátis em <a href="https://console.apify.com/account/integrations" target="_blank" rel="noreferrer">console.apify.com → Integrations</a> (plano free dá US$ 5/mês de crédito).</small>
+                </label>
+
+                <div class="field-row">
+                  <label class="field">
+                    <span>Actor de Reels (Apify)</span>
+                    <input type="text" name="apifyReelsActor" class="input" placeholder="apify~instagram-reel-scraper" />
+                  </label>
+                  <label class="field">
+                    <span>Actor de Stories (Opcional)</span>
+                    <input type="text" name="apifyStoriesActor" class="input" placeholder="Ex: actor-de-stories-da-apify" />
+                  </label>
+                </div>
+
+                <label class="field">
+                  <span>GEMINI_API_KEY (Desconstrução IA + Vídeo Gemini Omni 1.2 Flash) <span class="badge-inline" id="settingsGeminiState"></span></span>
+                  <input type="password" name="geminiApiKey" class="input" placeholder="Cole sua chave Gemini (aistudio.google.com/apikey)" autocomplete="off" />
+                  <small class="muted">Assinantes Google AI Pro podem resgatar <strong>US$ 10/mês grátis</strong> no menu lateral do <a href="https://aistudio.google.com/apikey" target="_blank" rel="noreferrer">Google AI Studio</a> ("Claim your free API credits").</small>
+                </label>
+
+                <div class="field-row">
+                  <label class="field">
+                    <span>Modelo Gemini (Texto/Análise)</span>
+                    <input type="text" name="geminiModel" class="input" placeholder="gemini-2.5-flash" />
+                  </label>
+                  <label class="field">
+                    <span>Modelo Gemini Omni (Vídeo)</span>
+                    <input type="text" name="geminiOmniModel" class="input" placeholder="gemini-omni-1.2-flash" />
+                  </label>
+                  <label class="field compact">
+                    <span>Posts / perfil</span>
+                    <input type="number" name="defaultMaxItemsPerProfile" class="input" min="1" max="50" value="10" />
+                  </label>
+                </div>
+
+                <hr style="border:0; border-top:1px solid var(--border); margin:6px 0;" />
+
+                <label class="field">
+                  <span>FAL_KEY (Studio de Vídeo: Seedance 2.0 + OmniHuman v2) <span class="badge-inline" id="settingsFalState"></span></span>
+                  <input type="password" name="falKey" class="input" placeholder="Cole sua chave fal.ai (deixe vazio para manter atual)" autocomplete="off" />
+                  <small class="muted">Crie em <a href="https://fal.ai/dashboard/keys" target="_blank" rel="noreferrer">fal.ai/dashboard/keys</a> — uma única chave libera Seedance 2.0/2.5 e OmniHuman v2.</small>
+                </label>
+
+                <div class="field-row">
+                  <label class="field">
+                    <span>Endpoint Seedance Omni (Ref-to-Video)</span>
+                    <input type="text" name="falSeedanceRefModel" class="input" placeholder="bytedance/seedance-2.0/reference-to-video" />
+                  </label>
+                  <label class="field">
+                    <span>Endpoint OmniHuman (Avatar)</span>
+                    <input type="text" name="falOmnihumanModel" class="input" placeholder="bytedance/omnihuman/v2" />
+                  </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Salvar Configurações</button>
+              </form>
+            </div>
+
+            <div class="panel-card">
+              <h3>Automação Recorrente (Monitoramento Diário)</h3>
+              <p class="muted small">Você pode agendar a coleta automática de 2 jeitos super simples:</p>
+
+              <div class="guide-box">
+                <div class="guide-title">Opção 1 — Via Antigravity (<code>/schedule</code>)</div>
+                <p class="small">No chat do Antigravity com esta pasta aberta como workspace, digite <code>/schedule</code> e peça:</p>
+                <pre class="code-block" id="scheduleSnippet">Todos os dias às 08:00, execute `npm run sync` na pasta do projeto e me avise se entraram novos Reels ou Stories relevantes no Swipe File.</pre>
+                <button class="btn btn-sm btn-secondary copy-btn" data-copy-target="scheduleSnippet">Copiar instrução</button>
+              </div>
+
+              <div class="guide-box">
+                <div class="guide-title">Opção 2 — Agendador de Tarefas do Windows (PowerShell)</div>
+                <p class="small">Roda silenciosamente todo dia às 08:00 mesmo com o Antigravity fechado:</p>
+                <pre class="code-block" id="taskSchedulerSnippet">schtasks /Create /SC DAILY /TN "SwipeStudioSync" /TR "cmd /c cd /d C:\Users\victo\.gemini\antigravity\scratch\content-swipe-assistant && npm run sync" /ST 08:00 /F</pre>
+                <button class="btn btn-sm btn-secondary copy-btn" data-copy-target="taskSchedulerSnippet">Copiar comando</button>
+              </div>
+
+              <div class="guide-box">
+                <div class="guide-title">Como modelar conteúdo comigo no chat</div>
+                <p class="small">Abra qualquer item do Swipe File e clique em <strong>"Copiar Prompt de Modelagem"</strong>, ou me diga direto no chat:</p>
+                <pre class="code-block">"Modela 3 roteiros de Reels pro meu produto usando os melhores ganchos da biblioteca"
+"Cria uma sequência de 5 Stories de venda baseada no SWP-002"</pre>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL: NOVO ITEM (REEL OU STORIES) -->
+  <div class="modal-backdrop hidden" id="newItemModal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <h3>Adicionar Referência ao Swipe File</h3>
+        <button class="icon-btn" data-close-modal="newItemModal">✕</button>
+      </div>
+      <form id="formNewItem" class="modal-body stack-form">
+        <div class="format-switch">
+          <button type="button" class="format-pill active" data-new-format="Reel">🎬 Reel</button>
+          <button type="button" class="format-pill" data-new-format="Story">📱 Sequência de Stories</button>
+        </div>
+        <input type="hidden" name="format" value="Reel" id="newItemFormatInput" />
+
+        <div class="field-row">
+          <label class="field">
+            <span>@perfil de referência *</span>
+            <input type="text" name="profileHandle" id="newItemProfileHandle" class="input" placeholder="ex: @referencia" required />
+          </label>
+          <label class="field">
+            <span>Assunto / Nicho</span>
+            <input type="text" name="niche" id="newItemNicheInput" class="input" list="nicheSuggestions" placeholder="Ex: Skincare, Vendas... (herda do perfil)" />
+          </label>
+          <label class="field">
+            <span>Link do Instagram (opcional)</span>
+            <input type="url" name="url" class="input" placeholder="https://www.instagram.com/reel/..." />
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Título curto / Tema *</span>
+          <input type="text" name="title" class="input" placeholder="Ex: Quebra de objeção sobre preço em 30s" required />
+        </label>
+
+        <div class="field-row">
+          <label class="field">
+            <span>Tipo de Gancho</span>
+            <select name="hookType" class="select" id="newItemHookType"></select>
+          </label>
+          <label class="field">
+            <span>Estágio do Funil</span>
+            <select name="funnelStage" class="select">
+              <option value="Topo">Topo (Atração)</option>
+              <option value="Meio">Meio (Autoridade)</option>
+              <option value="Fundo">Fundo (Venda)</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Status</span>
+            <select name="status" class="select">
+              <option value="Para Modelar">Para Modelar</option>
+              <option value="Novo">Novo</option>
+              <option value="Modelado">Modelado</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Gancho (0–3s do Reel ou abertura do Story 1) *</span>
+          <textarea name="hook" class="textarea" rows="2" placeholder="Qual frase/cena prendeu sua atenção imediatamente?" required></textarea>
+        </label>
+
+        <!-- Campos específicos de REEL -->
+        <div id="reelOnlyFields" class="stack-form">
+          <label class="field">
+            <span>Roteiro / Transcrição / Cenas do Reel</span>
+            <textarea name="scriptOrTranscript" class="textarea" rows="4" placeholder="Cole a transcrição falada ou descreva o que acontece em cada bloco..."></textarea>
+          </label>
+          <div class="field-row">
+            <label class="field">
+              <span>Views (opcional)</span>
+              <input type="number" name="views" class="input" min="0" value="0" />
+            </label>
+            <label class="field">
+              <span>Likes (opcional)</span>
+              <input type="number" name="likes" class="input" min="0" value="0" />
+            </label>
+            <label class="field">
+              <span>Comentários</span>
+              <input type="number" name="comments" class="input" min="0" value="0" />
+            </label>
+          </div>
+        </div>
+
+        <!-- Campos específicos de STORIES -->
+        <div id="storyOnlyFields" class="stack-form hidden">
+          <div class="panel-card-header">
+            <span class="field-title">Sequência de Frames (Stories)</span>
+            <button type="button" class="btn btn-sm btn-secondary" id="btnAddStoryFrame">+ Adicionar Story</button>
+          </div>
+          <div id="storyFramesBuilder" class="frames-builder"></div>
+        </div>
+
+        <div class="field-row">
+          <label class="field">
+            <span>Estrutura / Esqueleto Narrativo</span>
+            <input type="text" name="structure" class="input" placeholder="Ex: 1. Gancho -> 2. Prova -> 3. Solução -> 4. CTA" />
+          </label>
+          <label class="field">
+            <span>CTA (Chamada para Ação)</span>
+            <input type="text" name="cta" class="input" placeholder="Ex: Comenta QUERO / Link no Story" />
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Por que funcionou (Análise)</span>
+          <textarea name="whyItWorked" class="textarea" rows="2" placeholder="O que fez esse conteúdo reter atenção ou gerar desejo?"></textarea>
+        </label>
+
+        <div class="field-row">
+          <label class="field">
+            <span>Legenda Original (opcional)</span>
+            <textarea name="caption" class="textarea" rows="2" placeholder="Cole a legenda se for relevante..."></textarea>
+          </label>
+          <label class="field">
+            <span>Tags (separadas por vírgula)</span>
+            <input type="text" name="tags" class="input" placeholder="ex: objecao, prova-social, venda-direta" />
+          </label>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" data-close-modal="newItemModal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar na Biblioteca</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: DETALHE & DESCONSTRUÇÃO DO ITEM -->
+  <div class="modal-backdrop hidden" id="detailModal">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-header">
+        <div class="detail-header-left">
+          <span class="pill" id="detailFormatPill">Reel</span>
+          <span class="item-id-chip" id="detailIdChip">SWP-001</span>
+          <h3 id="detailTitle">Título</h3>
+        </div>
+        <div class="detail-header-actions">
+          <button class="btn btn-sm btn-primary" id="btnSendToVideoStudio">🎬 Modelar em Vídeo</button>
+          <button class="btn btn-sm btn-secondary" id="btnCopyModelPrompt">✨ Prompt Texto</button>
+          <button class="btn btn-sm btn-secondary" id="btnAnalyzeItem">🧠 Desconstruir (IA)</button>
+          <button class="icon-btn" data-close-modal="detailModal">✕</button>
+        </div>
+      </div>
+      <div class="modal-body" id="detailModalBody"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: EDITAR PERFIL (ASSUNTO/NICHO E OPÇÕES) -->
+  <div class="modal-backdrop hidden" id="editProfileModal">
+    <div class="modal-dialog modal-lg" style="max-width:560px;">
+      <div class="modal-header">
+        <h3 id="editProfileTitle">Editar Perfil</h3>
+        <button class="icon-btn" data-close-modal="editProfileModal">✕</button>
+      </div>
+      <form id="formEditProfile" class="modal-body stack-form">
+        <input type="hidden" name="id" />
+        <div class="field-row">
+          <label class="field">
+            <span>Assunto / Nicho *</span>
+            <input type="text" name="niche" class="input" list="nicheSuggestions" required />
+          </label>
+          <label class="field">
+            <span>Papel / Categoria</span>
+            <select name="category" class="select">
+              <option value="Concorrente Direto">Concorrente Direto</option>
+              <option value="Referência do Nicho">Referência do Nicho</option>
+              <option value="Referência Internacional">Referência Internacional</option>
+              <option value="Estilo / Formato">Estilo / Formato</option>
+            </select>
+          </label>
+        </div>
+        <div class="field-row">
+          <label class="field">
+            <span>Apelido / Nome</span>
+            <input type="text" name="displayName" class="input" />
+          </label>
+          <label class="field compact">
+            <span>Limite / sync</span>
+            <input type="number" name="maxItemsPerSync" class="input" min="1" max="50" />
+          </label>
+        </div>
+        <label class="field">
+          <span>Por que você acompanha esse perfil?</span>
+          <textarea name="whyFollow" class="textarea" rows="2"></textarea>
+        </label>
+        <div class="field-row align-center">
+          <label class="checkbox-label">
+            <input type="checkbox" name="monitorReels" />
+            <span>Monitorar Reels</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="monitorStories" />
+            <span>Monitorar Stories</span>
+          </label>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" data-close-modal="editProfileModal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <datalist id="nicheSuggestions"></datalist>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
